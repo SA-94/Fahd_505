@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>البروفايل السري || مستوى أسطوري</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cyber&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-green: #0f0;
+      --cyber-blue: #00ffff;
+      --matrix-black: #000;
+    }
+    body {
+      margin: 0;
+      background: var(--matrix-black);
+      color: var(--neon-green);
+      font-family: 'Cyber', 'Courier New', monospace;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    .matrix-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.3;
+    }
+    .matrix-char {
+      position: absolute;
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green);
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      from { transform: translateY(-100vh); }
+      to { transform: translateY(100vh); }
+    }
+    .hologram-effect {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(45deg,
+                  transparent 0px,
+                  transparent 5px,
+                  rgba(0, 255, 255, 0.1) 5px,
+                  rgba(0, 255, 255, 0.1) 10px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .cyber-title {
+      position: relative;
+      text-align: center;
+      font-size: 4em;
+      margin-top: 15vh;
+      animation: titleGlitch 2s infinite;
+      text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--cyber-blue);
+    }
+    @keyframes titleGlitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(5px, -5px); }
+      60% { transform: translate(-3px, 3px); }
+      80% { transform: translate(3px, -3px); }
+    }
+    .secret-content {
+      position: relative;
+      max-width: 800px;
+      margin: 5% auto;
+      padding: 2rem;
+      border: 3px solid var(--neon-green);
+      box-shadow: 0 0 50px var(--neon-green);
+      backdrop-filter: blur(10px);
+    }
+    .secret-content p {
+      font-size: 1.5em;
+      line-height: 1.8;
+      animation: textFlow 10s linear infinite;
+      background: linear-gradient(90deg, var(--neon-green), var(--cyber-blue), var(--neon-green));
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+    }
+    @keyframes textFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .cyber-button {
+      display: block;
+      width: 300px;
+      margin: 2rem auto;
+      padding: 1rem;
+      font-size: 1.2em;
+      background: transparent;
+      border: 2px solid var(--cyber-blue);
+      color: var(--cyber-blue);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cyber-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+      transition: 0.5s;
+    }
+    .cyber-button:hover {
+      box-shadow: 0 0 30px var(--cyber-blue);
+      transform: scale(1.05);
+    }
+    .cyber-button:hover::before {
+      left: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix-rain" id="matrixContainer"></div>
+  <div class="hologram-effect"></div>
+  <h1 class="cyber-title">!مرحبا بالسيد الهاكر</h1>
+  <div class="secret-content">
+    <p>
+      ◙ الوصول إلى الملفات السرية<br>
+      ◙ قاعدة البيانات الرئيسية<br>
+      ◙ أنظمة المراقبة العالمية<br>
+      ◙ واجهات التحكم الذكية
+    </p>
+    <button class="cyber-button">تفعيل النظام السري</button>
+    <button class="cyber-button">تحميل البيانات المشفرة</button>
+    <button class="cyber-button">محو السجلات</button>
+  </div>
+  <script>
+    "use strict";
+    const matrixContainerVip = document.getElementById('matrixContainer');
+    function createMatrixRain() {
+      const chars = "01@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      function addChar() {
+        const char = document.createElement('div');
+        char.className = 'matrix-char';
+        char.style.left = Math.random() * 100 + '%';
+        char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        char.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+        matrixContainerVip.appendChild(char);
+        setTimeout(() => {
+          if (char && char.parentNode) {
+            char.parentNode.removeChild(char);
+          }
+        }, 5000);
+        requestAnimationFrame(addChar);
+      }
+      requestAnimationFrame(addChar);
+    }
+    createMatrixRain();
+  </script>
+</body>
+</html>
