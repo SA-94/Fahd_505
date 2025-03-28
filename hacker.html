@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الحماية الذكي - الاختراق التجريبي</title>
+    <title>نظام الحماية الذكي - الاختبار الأمني</title>
     <style>
         body {
             margin: 0;
@@ -40,19 +40,6 @@
             margin-top: 20px;
         }
 
-        .glitch {
-            animation: glitch 1s infinite;
-            text-shadow: 2px 2px #FF00FF, -2px -2px #00FFFF;
-        }
-
-        @keyframes glitch {
-            0% { clip-path: inset(0 0 95% 0); }
-            25% { clip-path: inset(0 95% 0 0); }
-            50% { clip-path: inset(95% 0 0 0); }
-            75% { clip-path: inset(0 0 0 95%); }
-            100% { clip-path: inset(0); }
-        }
-
         .system-alert {
             border: 2px solid #F00;
             padding: 15px;
@@ -61,9 +48,12 @@
             animation: alert-pulse 1s infinite;
         }
 
-        @keyframes alert-pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .success-alert {
+            border: 2px solid #0F0;
+            padding: 15px;
+            margin: 10px 0;
+            background: #002200;
+            animation: success-pulse 1.5s;
         }
 
         .repair-progress {
@@ -78,24 +68,22 @@
             animation: loading 1.5s infinite;
         }
 
+        @keyframes alert-pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes success-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         @keyframes loading {
             0% { content: ''; }
             33% { content: '.'; }
             66% { content: '..'; }
             100% { content: '...'; }
-        }
-
-        .error {
-            color: #F00;
-            position: fixed;
-            animation: error-flicker 0.1s infinite;
-            font-size: 1.2em;
-            z-index: 999;
-        }
-
-        @keyframes error-flicker {
-            0% { opacity: 1; }
-            50% { opacity: 0.2; }
         }
     </style>
 </head>
@@ -130,8 +118,12 @@
         ];
 
         function startHack() {
-            if(document.getElementById('password').value !== '1221') return;
-            
+            const password = document.getElementById('password').value;
+            if(password !== '1221') {
+                alert('كلمة المرور غير صحيحة!');
+                return;
+            }
+
             const log = document.getElementById('command-log');
             log.innerHTML = '';
             
@@ -162,59 +154,24 @@
                     log.scrollTop = log.scrollHeight;
                 }, 1000);
 
-                // مرحلة الفشل
+                // مرحلة استعادة التحكم
                 setTimeout(() => {
                     clearInterval(repairInterval);
                     log.innerHTML += `
-                        <div style="color:#F00; margin:10px 0;">
-                            ███████████████████████████████████
-                            <br>فشل الإجراءات المضادة
-                            <br>███████████████████████████████████
-                        </div>`;
-                    
-                    // تأثيرات القلع النهائي
-                    document.body.classList.add('glitch');
-                    createErrors();
-                    
-                    // الرسالة النهائية
-                    setTimeout(() => {
-                        document.body.innerHTML = `
-                            <div style="text-align:center; padding:20px;">
-                                <div style="font-size:2em; color:#0F0">
-                                    ✓ السيطرة الكاملة على النظام
-                                </div>
-                                <div style="margin-top:20px; font-size:1.2em;">
-                                    <div>جاري تثبيت الوصول الدائم...</div>
-                                    <div style="font-size:0.8em; color:#0F09;">
-                                        Redirecting to darknet/control-panel...
-                                    </div>
-                                </div>
+                        <div class="success-alert">
+                            ✓ تم استعادة التحكم بنجاح
+                            <div style="font-size:0.8em; margin-top:5px;">
+                                جاري إعادة التوجيه إلى النظام الآمن...
                             </div>
-                        `;
-                        setTimeout(() => window.location.href = 'hacked.html', 3000);
-                    }, 4000);
+                        </div>`;
+                    log.scrollTop = log.scrollHeight;
+
+                    // التوجيه إلى الصفحة الآمنة بعد 3 ثواني
+                    setTimeout(() => {
+                        window.location.href = 'vip-access.html';
+                    }, 3000);
                 }, 7000);
             }, 4000);
-        }
-
-        function createErrors() {
-            const errors = [
-                "ERR_ACCESS_DENIED",
-                "CRITICAL_SYSTEM_FAILURE",
-                "INVALID_SECURITY_TOKEN",
-                "ROOT_ACCESS_VIOLATION",
-                "MEMORY_CORRUPTION_0x1A3F"
-            ];
-            
-            for(let i = 0; i < 20; i++) {
-                const error = document.createElement('div');
-                error.className = 'error';
-                error.style.left = Math.random() * 90 + '%';
-                error.style.top = Math.random() * 90 + '%';
-                error.textContent = errors[Math.floor(Math.random() * errors.length)];
-                document.body.appendChild(error);
-                setTimeout(() => error.remove(), 2000);
-            }
         }
     </script>
 </body>
