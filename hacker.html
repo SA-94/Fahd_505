@@ -68,6 +68,28 @@
             animation: loading 1.5s infinite;
         }
 
+        .glitch-effect {
+            animation: glitch 1s linear infinite;
+            position: relative;
+        }
+
+        .error-message {
+            color: #F00;
+            position: fixed;
+            font-size: 1.2em;
+            z-index: 999;
+            text-shadow: 0 0 5px #F00;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
+        }
+
         @keyframes alert-pulse {
             0% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -117,6 +139,14 @@
             "تفعيل المصادقة الثنائية..."
         ];
 
+        const errorMessages = [
+            "ERROR: SYSTEM BREACH DETECTED!",
+            "CRITICAL FAILURE IN SECTOR 5",
+            "UNAUTHORIZED ACCESS ATTEMPT",
+            "SECURITY PROTOCOLS COMPROMISED",
+            "EMERGENCY LOCKDOWN INITIATED"
+        ];
+
         function startHack() {
             const password = document.getElementById('password').value;
             if(password !== '1221') {
@@ -134,6 +164,12 @@
                     log.scrollTop = log.scrollHeight;
                 }, i * 500);
             });
+
+            // بدء تأثيرات التشويش بعد 3 ثواني
+            setTimeout(() => {
+                document.body.classList.add('glitch-effect');
+                startErrorMessages();
+            }, 3000);
 
             // مرحلة الإصلاح التلقائي
             setTimeout(() => {
@@ -157,6 +193,12 @@
                 // مرحلة استعادة التحكم
                 setTimeout(() => {
                     clearInterval(repairInterval);
+                    
+                    // إيقاف تأثيرات التشويش
+                    document.body.classList.remove('glitch-effect');
+                    clearInterval(errorInterval);
+                    document.querySelectorAll('.error-message').forEach(el => el.remove());
+                    
                     log.innerHTML += `
                         <div class="success-alert">
                             ✓ تم استعادة التحكم بنجاح
@@ -172,6 +214,22 @@
                     }, 3000);
                 }, 7000);
             }, 4000);
+        }
+
+        let errorInterval;
+        function startErrorMessages() {
+            errorInterval = setInterval(() => {
+                const error = document.createElement('div');
+                error.className = 'error-message';
+                error.style.left = Math.random() * 90 + '%';
+                error.style.top = Math.random() * 90 + '%';
+                error.textContent = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+                document.body.appendChild(error);
+                
+                setTimeout(() => {
+                    error.remove();
+                }, 2000);
+            }, 300);
         }
     </script>
 </body>
